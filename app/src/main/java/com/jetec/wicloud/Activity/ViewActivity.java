@@ -1,6 +1,5 @@
 package com.jetec.wicloud.Activity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -21,11 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.jetec.wicloud.AlertDialog.CheckDialog;
 import com.jetec.wicloud.GetTimeZone;
@@ -36,16 +30,12 @@ import com.jetec.wicloud.Post_GET.*;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.SQL.UserAccount;
-import com.jetec.wicloud.ShowMessage;
-import com.jetec.wicloud.SpinnerList.*;
 import com.jetec.wicloud.Value;
 import com.jetec.wicloud.WebSocket.*;
 import com.jetec.wicloud.WebSocket.SocketHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ViewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,10 +49,6 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
     private SocketHandler socketHandler = new SocketHandler();
     private UserId userId = new UserId(this);
     private Socket socket = new Socket();
-    private ShowMessage showMessage = new ShowMessage(this);
-    private int page = 1;
-    private ArrayList<String> value_sp1, value_sp2, value_getsp2;
-    private String model, sensor;
     private JSONObject responseJson;
     private ListView listView;
 
@@ -186,141 +172,21 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void ShowChart(String nowdate, String olddate, String select){
+    private void ShowChart(String nowdate, String olddate, String select) {
         Intent intent = new Intent(this, ChartActivity.class);
-        intent.putExtra("nowdate",nowdate);
-        intent.putExtra("olddate",olddate);
-        intent.putExtra("select",select);
+        intent.putExtra("nowdate", nowdate);
+        intent.putExtra("olddate", olddate);
+        intent.putExtra("select", select);
         intent.putExtra("response", responseJson.toString());
         startActivity(intent);
         finish();
     }
 
-    private void adddevice(){
+    private void adddevice() {
         Intent intent = new Intent(this, AddDeviceActivity.class);
         intent.putExtra("responseJson", responseJson.toString());
         startActivity(intent);
         finish();
-    }
-
-    private void new_image() {
-        setContentView(R.layout.new_image);
-
-        value_sp1 = new ArrayList<>();
-        value_sp2 = new ArrayList<>();
-        value_getsp2 = new ArrayList<>();
-        value_sp1.clear();
-        value_sp2.clear();
-        value_getsp2.clear();
-
-        ValueSpinner1 valueSpinner1 = new ValueSpinner1(this);
-        GetSensorValue getSensorValue = new GetSensorValue(ViewActivity.this);
-        value_sp1.addAll(valueSpinner1.getmodel());
-        value_sp2.add(getString(R.string.add_sensor));
-
-        Spinner spinner = findViewById(R.id.spinner);
-        Spinner spinner2 = findViewById(R.id.spinner2);
-        EditText editText = findViewById(R.id.editText);    //name
-        EditText editText2 = findViewById(R.id.editText2);  //max
-        EditText editText3 = findViewById(R.id.editText3);  //min
-        Button button = findViewById(R.id.button);
-
-        editText2.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED |
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editText3.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED |
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_style, value_sp1);
-        spinner.setAdapter(adapter);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.spinner_style, value_sp2);
-        spinner2.setAdapter(adapter2);
-
-        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewActivity.this, R.layout.spinner_style, value_sp2);
-                    spinner2.setAdapter(adapter);
-                    model = "";
-                    sensor = "";
-                }
-                if (position > 0) {
-                    model = value_sp1.get(position);
-                    String modelId = value_sp1.get(position);
-                    value_getsp2 = getSensorValue.getValue(modelId);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewActivity.this, R.layout.spinner_style, value_getsp2);
-                    spinner2.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        spinner2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    sensor = "";
-                }
-                if (position > 0) {
-                    sensor = value_getsp2.get(position);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        button.setOnClickListener(v -> {
-            vibrator.vibrate(100);
-            String edit;
-            if (editText.getText().toString().trim().matches("")) {
-                edit = sensor;
-            } else {
-                edit = editText.getText().toString().trim();
-            }
-
-            if (edit.matches("") || model.matches("") || sensor.matches("")) {
-                showMessage.show(getString(R.string.value_button));
-            } else {
-                try {
-                    String max = editText2.getText().toString().trim();
-                    String min = editText3.getText().toString().trim();
-
-                    @SuppressLint("DrawAllocation")
-                    BigDecimal num = new BigDecimal(max);
-                    max = num.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-                    @SuppressLint("DrawAllocation")
-                    BigDecimal num2 = new BigDecimal(min);
-                    min = num2.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-
-                    if (max.matches("") || min.matches("")) {
-                        showMessage.show(getString(R.string.num_button));
-                    } else {
-                        ArrayList<String> sql = new ArrayList<>();
-                        sql.clear();
-
-                        sql.add("Image");
-                        sql.add(edit);
-                        sql.add(model);
-                        sql.add(sensor);
-                        sql.add(max);
-                        sql.add(min);
-
-                        JSONArray sql_json = new JSONArray(sql.toString());
-                        deviceList.insert(sql_json.toString());
-                        model = "";
-                        sensor = "";
-                        home();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     public boolean onKeyDown(int key, KeyEvent event) {
@@ -329,24 +195,14 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case KeyEvent.KEYCODE_BACK: {
                 vibrator.vibrate(100);
-                if (page == 1) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.app_name)
-                            .setIcon(R.drawable.icon_wicloud)
-                            .setMessage(R.string.app_message)
-                            .setPositiveButton(R.string.app_message_b1, (dialog, which) -> finish())
-                            .setNegativeButton(R.string.app_message_b2, (dialog, which) -> {
-                                // TODO Auto-generated method stub
-                            }).show();
-                } else if (page == 4) {
-                    page = 1;
-                    home();
-                } else if (page == 5) {
-                    page = 4;
-                    model = "";
-                    sensor = "";
-                    //adddevice();
-                }
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.app_name)
+                        .setIcon(R.drawable.icon_wicloud)
+                        .setMessage(R.string.app_message)
+                        .setPositiveButton(R.string.app_message_b1, (dialog, which) -> finish())
+                        .setNegativeButton(R.string.app_message_b2, (dialog, which) -> {
+                            // TODO Auto-generated method stub
+                        }).show();
             }
             break;
             case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -383,7 +239,6 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
             vibrator.vibrate(100);
-            page = 4;
             socketHandler.stopHandler();
             if (socket.states())
                 socket.closeConnect();
@@ -402,29 +257,29 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_dashboard) {
             vibrator.vibrate(100);
-            page = 1;
-            socketHandler.stopHandler();
+            /*socketHandler.stopHandler();
             if (socket.states())
                 socket.closeConnect();
-            home();
+            Intent intent = new Intent(ViewActivity.this, LoginActivity.class);
+            intent.putExtra("responseJson", responseJson.toString());
+            startActivity(intent);
+            finish();*/
             return true;
         } else if (id == R.id.nav_hardware) {
             vibrator.vibrate(100);
-            page = 2;
 //            socketHandler.stopHandler();
 //            if (socket.states())
 //                socket.closeConnect();
             Log.d(TAG, "硬體資訊");
         } else if (id == R.id.nav_alert) {
             vibrator.vibrate(100);
-            page = 3;
 //            socketHandler.stopHandler();
 //            if (socket.states())
 //                socket.closeConnect();
             Log.d(TAG, "警報");
         } else if (id == R.id.nav_logout) {
             vibrator.vibrate(100);
-            if(userAccount.getCount() > 1){
+            if (userAccount.getCount() > 1) {
                 userAccount.delete();
             }
             Intent intent = new Intent(ViewActivity.this, LoginActivity.class);

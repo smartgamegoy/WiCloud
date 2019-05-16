@@ -90,6 +90,7 @@ public class NewImageAvtivity extends AppCompatActivity {
                 if (position == 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(NewImageAvtivity.this, R.layout.spinner_style, value_sp2);
                     spinner2.setAdapter(adapter);
+                    spinner2.setEnabled(false);
                     model = "";
                     sensor = "";
                 }
@@ -99,6 +100,7 @@ public class NewImageAvtivity extends AppCompatActivity {
                     value_getsp2 = getSensorValue.getValue(modelId);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(NewImageAvtivity.this, R.layout.spinner_style, value_getsp2);
                     spinner2.setAdapter(adapter);
+                    spinner2.setEnabled(true);
                 }
             }
 
