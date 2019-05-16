@@ -18,7 +18,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name="com.jetec.wicloud.Activity.StartActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,19 +28,19 @@
         </activity>
         <activity
             android:name="com.jetec.wicloud.Activity.FirstActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.jetec.wicloud.Activity.LoginActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateUnchanged|adjustPan"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.jetec.wicloud.Activity.ViewActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateUnchanged|adjustPan"
@@ -48,7 +48,34 @@
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.jetec.wicloud.Activity.ChartActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
+            android:largeHeap="true"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
+            android:name="com.jetec.wicloud.Activity.AddDeviceActivity"
+            android:screenOrientation="user"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
+            android:largeHeap="true"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
+            android:name="com.jetec.wicloud.Activity.NewValueActivity"
+            android:screenOrientation="user"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
+            android:largeHeap="true"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity
+            android:name="com.jetec.wicloud.Activity.NewImageAvtivity"
+            android:screenOrientation="user"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateUnchanged|adjustPan"

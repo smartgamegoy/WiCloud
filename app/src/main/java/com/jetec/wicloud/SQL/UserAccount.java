@@ -75,4 +75,15 @@ public class UserAccount extends SQLiteOpenHelper {
         return db.query(table_name, null, null,
                 null, null, null, null);
     }
+
+    public void delete(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        @SuppressLint("Recycle")
+        Cursor cursor = db.rawQuery("SELECT * FROM " + table_name, null);
+
+        cursor.moveToFirst();
+        String account = cursor.getString(cursor.getColumnIndex("account"));
+
+        db.delete(table_name, "account" + "=?" , new String[]{account});
+    }
 }

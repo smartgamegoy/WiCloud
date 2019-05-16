@@ -37,6 +37,7 @@ public class SocketHandler extends Handler {
             try {
                 Value.socketvalue = new JSONObject(message);
                 if(deviceList.getCount() != 0) {
+                    //Value.dataList.notifyDataSetChanged();
                     relocate();
                     listView.setAdapter(Value.dataList);
                     if (state != null)

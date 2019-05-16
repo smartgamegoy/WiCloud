@@ -64,11 +64,11 @@ public class LoginActivity extends AppCompatActivity implements ConnectListener 
         if (userAccount.getCount() != 0) {
             Cursor check = userAccount.select();
             Log.d(TAG, "check = " + check.getCount());
-            check.moveToPosition(0);
+            check.moveToLast();
             account = check.getString(check.getColumnIndex("account"));
             password = check.getString(check.getColumnIndex("password"));
-            loading.show(getString(R.string.Signin));
-            new Thread(connect).start();
+            editText.setText(account);
+            editText2.setText(password);
         }
 
         editText.setOnClickListener(v -> vibrator.vibrate(100));
@@ -168,11 +168,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectListener 
     @Override
     public void isConnected(JSONObject responseJson) {
         Log.d(TAG, "isConnected!");
-        if (userAccount.getCount() == 0) {
-            userAccount.insert(account, password);
-        }
         Intent intent = new Intent(this, ViewActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("responseJson", responseJson.toString());
         startActivity(intent);
         finish();

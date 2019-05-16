@@ -24,13 +24,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.jetec.wicloud.AlertDialog.CheckDialog;
-import com.jetec.wicloud.Canvas.ChoseImageView;
-import com.jetec.wicloud.Canvas.ChoseValueView;
 import com.jetec.wicloud.GetTimeZone;
 import com.jetec.wicloud.ListView.DataList;
 import com.jetec.wicloud.LoadHandler;
@@ -38,6 +35,7 @@ import com.jetec.wicloud.Loading;
 import com.jetec.wicloud.Post_GET.*;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
+import com.jetec.wicloud.SQL.UserAccount;
 import com.jetec.wicloud.ShowMessage;
 import com.jetec.wicloud.SpinnerList.*;
 import com.jetec.wicloud.Value;
@@ -54,6 +52,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
     private String TAG = "ViewActivity";
     private Vibrator vibrator;
+    private UserAccount userAccount = new UserAccount(this);
     private Loading loading = new Loading(this);
     private LoadHandler loadHandler = new LoadHandler(this);
     private DeviceList deviceList = new DeviceList(this);
@@ -128,8 +127,8 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
             Value.dataList = new DataList(this, deviceList.getJSON());
 
-            socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket));
             listView.setAdapter(Value.dataList);
+            socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket));
 
             listView.setOnItemLongClickListener((parent, view, position, id) -> {
                 vibrator.vibrate(100);
@@ -197,127 +196,11 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    private void adddevice() {
-        setContentView(R.layout.choselist);
-
-        ChoseValueView choseValueView = new ChoseValueView(this);
-        ChoseImageView choseImageView = new ChoseImageView(this);
-
-        LinearLayout linearLayout = findViewById(R.id.linearLayout);
-        LinearLayout linearLayout2 = findViewById(R.id.linearLayout2);
-
-        linearLayout.addView(choseValueView);
-        linearLayout2.addView(choseImageView);
-
-        linearLayout.setOnClickListener(v -> {
-            vibrator.vibrate(100);
-            page = 5;
-            new_value();
-        });
-
-        linearLayout2.setOnClickListener(v -> {
-            vibrator.vibrate(100);
-            page = 5;
-            new_image();
-        });
-    }
-
-    private void new_value() {
-
-        setContentView(R.layout.new_value);
-
-        value_sp1 = new ArrayList<>();
-        value_sp2 = new ArrayList<>();
-        value_getsp2 = new ArrayList<>();
-        value_sp1.clear();
-        value_sp2.clear();
-        value_getsp2.clear();
-
-        ValueSpinner1 valueSpinner1 = new ValueSpinner1(this);
-        GetSensorValue getSensorValue = new GetSensorValue(ViewActivity.this);
-        value_sp1.addAll(valueSpinner1.getmodel());
-        value_sp2.add(getString(R.string.add_sensor));
-
-        Spinner spinner = findViewById(R.id.spinner);
-        Spinner spinner2 = findViewById(R.id.spinner2);
-        EditText editText = findViewById(R.id.editText);
-        Button button = findViewById(R.id.button);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_style, value_sp1);
-        spinner.setAdapter(adapter);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.spinner_style, value_sp2);
-        spinner2.setAdapter(adapter2);
-
-        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewActivity.this, R.layout.spinner_style, value_sp2);
-                    spinner2.setAdapter(adapter);
-                    model = "";
-                    sensor = "";
-                }
-                if (position > 0) {
-                    model = value_sp1.get(position);
-                    String modelId = value_sp1.get(position);
-                    value_getsp2 = getSensorValue.getValue(modelId);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewActivity.this, R.layout.spinner_style, value_getsp2);
-                    spinner2.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        spinner2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    sensor = "";
-                }
-                if (position > 0) {
-                    sensor = value_getsp2.get(position);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        button.setOnClickListener(v -> {
-            vibrator.vibrate(100);
-            String edit;
-            if (editText.getText().toString().trim().matches("")) {
-                edit = sensor;
-            } else {
-                edit = editText.getText().toString().trim();
-            }
-
-            if (edit.matches("") || model.matches("") || sensor.matches("")) {
-                showMessage.show(getString(R.string.value_button));
-            } else {
-                try {
-                    ArrayList<String> sql = new ArrayList<>();
-                    sql.clear();
-
-                    sql.add("Value");
-                    sql.add(edit);
-                    sql.add(model);
-                    sql.add(sensor);
-
-                    JSONArray sql_json = new JSONArray(sql.toString());
-                    deviceList.insert(sql_json.toString());
-                    model = "";
-                    sensor = "";
-                    home();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    private void adddevice(){
+        Intent intent = new Intent(this, AddDeviceActivity.class);
+        intent.putExtra("responseJson", responseJson.toString());
+        startActivity(intent);
+        finish();
     }
 
     private void new_image() {
@@ -462,7 +345,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
                     page = 4;
                     model = "";
                     sensor = "";
-                    adddevice();
+                    //adddevice();
                 }
             }
             break;
@@ -541,6 +424,9 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
             Log.d(TAG, "警報");
         } else if (id == R.id.nav_logout) {
             vibrator.vibrate(100);
+            if(userAccount.getCount() > 1){
+                userAccount.delete();
+            }
             Intent intent = new Intent(ViewActivity.this, LoginActivity.class);
             startActivity(intent);
             socketHandler.stopHandler();
@@ -597,6 +483,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         Log.d(TAG, "onDestroy");
         loading.dismiss();
         deviceList.close();
+        userAccount.close();
         socketHandler.stopHandler();
         if (socket.states())
             socket.closeConnect();
