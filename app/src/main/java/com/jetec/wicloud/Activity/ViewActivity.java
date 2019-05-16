@@ -65,6 +65,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<String> value_sp1, value_sp2, value_getsp2;
     private String model, sensor;
     private JSONObject responseJson;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView listView = findViewById(R.id.listview);
+        listView = findViewById(R.id.listview);
         listView.setVisibility(View.GONE);
         TextView textView = findViewById(R.id.nodevice);
 
