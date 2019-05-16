@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.jetec.wicloud.AlertDialog.CheckDialog;
 import com.jetec.wicloud.GetTimeZone;
 import com.jetec.wicloud.ListView.DataList;
+import com.jetec.wicloud.Listener.GetSocket;
+import com.jetec.wicloud.Listener.SocketListener;
 import com.jetec.wicloud.LoadHandler;
 import com.jetec.wicloud.Loading;
 import com.jetec.wicloud.Post_GET.*;
@@ -38,7 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Objects;
 
-public class ViewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ViewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SocketListener {
 
     private String TAG = "ViewActivity";
     private Vibrator vibrator;
@@ -51,6 +53,8 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
     private Socket socket = new Socket();
     private JSONObject responseJson;
     private ListView listView;
+    private DataList dataList;
+    private GetSocket getSocket = new GetSocket();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,8 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.nav_dashboard).setEnabled(false);
+        getSocket.setListener(this);
 
         listView = findViewById(R.id.listview);
         listView.setVisibility(View.GONE);
@@ -111,10 +117,11 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
             listView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
 
-            Value.dataList = new DataList(this, deviceList.getJSON());
-
-            listView.setAdapter(Value.dataList);
-            socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket));
+            //Value.dataList = new DataList(this, deviceList.getJSON());
+            Log.d(TAG, "deviceList.getJSON() = " + deviceList.getJSON());
+            dataList = new DataList(this, deviceList.getJSON());
+            listView.setAdapter(dataList);
+            socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket, getSocket));
 
             listView.setOnItemLongClickListener((parent, view, position, id) -> {
                 vibrator.vibrate(100);
@@ -152,11 +159,11 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
             socketHandler.stopHandler();
             if (socket.states())
                 socket.closeConnect();
-            getRecode(position);
+            getRecord(position);
         }
     };
 
-    private void getRecode(int position) {
+    private void getRecord(int position) {
         try {
             GetTimeZone getTimeZone = new GetTimeZone();
             String day = getTimeZone.getTime_date();
@@ -264,7 +271,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
             intent.putExtra("responseJson", responseJson.toString());
             startActivity(intent);
             finish();*/
-            return true;
+            return false;
         } else if (id == R.id.nav_hardware) {
             vibrator.vibrate(100);
 //            socketHandler.stopHandler();
@@ -342,5 +349,10 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         socketHandler.stopHandler();
         if (socket.states())
             socket.closeConnect();
+    }
+
+    @Override
+    public void getMessage() {
+        dataList.notifyDataSetChanged();
     }
 }

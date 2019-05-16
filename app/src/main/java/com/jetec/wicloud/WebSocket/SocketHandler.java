@@ -1,13 +1,11 @@
 package com.jetec.wicloud.WebSocket;
 
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.jetec.wicloud.Listener.GetSocket;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.Value;
 import org.json.JSONException;
@@ -17,31 +15,28 @@ public class SocketHandler extends Handler {
 
     private static final String TAG = "SocketHandler";
     private ListView listView;
-    private Parcelable state;
     private TextView textView;
     private DeviceList deviceList;
     private Socket socket;
+    private GetSocket getSocket;
 
     public SocketHandler() {
         super();
     }
 
-    public Handler startHandler(ListView listView, TextView textView, DeviceList deviceList, Socket socket) {
+    public Handler startHandler(ListView listView, TextView textView, DeviceList deviceList, Socket socket, GetSocket getSocket) {
         this.listView = listView;
         this.textView = textView;
         this.deviceList = deviceList;
         this.socket = socket;
+        this.getSocket = getSocket;
         //websocket handler
         return new Handler(msg -> {
             String message = msg.obj.toString();
             try {
                 Value.socketvalue = new JSONObject(message);
                 if(deviceList.getCount() != 0) {
-                    //Value.dataList.notifyDataSetChanged();
-                    relocate();
-                    listView.setAdapter(Value.dataList);
-                    if (state != null)
-                        listView.onRestoreInstanceState(state);
+                    getSocket.getNewmsg();
                 }
                 else {
                     stopHandler();
@@ -58,22 +53,6 @@ public class SocketHandler extends Handler {
     }
 
     public void stopHandler() {
-        startHandler(listView, textView, deviceList, socket).removeCallbacksAndMessages(null);
-    }
-
-    private void relocate() {
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    state = listView.onSaveInstanceState();
-                    Log.d(TAG, "state = " + state);
-                }
-            }
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
+        startHandler(listView, textView, deviceList, socket, getSocket).removeCallbacksAndMessages(null);
     }
 }

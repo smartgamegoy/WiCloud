@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.jetec.wicloud.Listener.GetSpinner;
+import com.jetec.wicloud.Listener.SpinnerListener;
 import com.jetec.wicloud.Post_GET.GetSensorValue;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
@@ -26,15 +29,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewImageAvtivity extends AppCompatActivity {
+public class NewImageAvtivity extends AppCompatActivity implements SpinnerListener {
 
     private String TAG = "NewValueActivity";
     private Vibrator vibrator;
+    private Spinner spinner2;
     private JSONObject responseJson;
     private List<String> value_getsp2;
     private String model, sensor;
     private ShowMessage showMessage = new ShowMessage(this);
     private DeviceList deviceList = new DeviceList(this);
+    private GetSpinner getSpinner = new GetSpinner();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +69,12 @@ public class NewImageAvtivity extends AppCompatActivity {
 
         ValueSpinner1 valueSpinner1 = new ValueSpinner1(this);
         GetSensorValue getSensorValue = new GetSensorValue(this);
+        getSpinner.setListener(this);
         value_sp1.addAll(valueSpinner1.getmodel());
         value_sp2.add(getString(R.string.add_sensor));
 
         Spinner spinner = findViewById(R.id.spinner);
-        Spinner spinner2 = findViewById(R.id.spinner2);
+        spinner2 = findViewById(R.id.spinner2);
         EditText editText = findViewById(R.id.editText);    //name
         EditText editText2 = findViewById(R.id.editText2);  //max
         EditText editText3 = findViewById(R.id.editText3);  //min
@@ -97,10 +103,9 @@ public class NewImageAvtivity extends AppCompatActivity {
                 if (position > 0) {
                     model = value_sp1.get(position);
                     String modelId = value_sp1.get(position);
-                    value_getsp2 = getSensorValue.getValue(modelId);
+                    value_getsp2 = getSensorValue.getValue(modelId, getSpinner);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(NewImageAvtivity.this, R.layout.spinner_style, value_getsp2);
                     spinner2.setAdapter(adapter);
-                    spinner2.setEnabled(true);
                 }
             }
 
@@ -141,16 +146,16 @@ public class NewImageAvtivity extends AppCompatActivity {
                     String max = editText2.getText().toString().trim();
                     String min = editText3.getText().toString().trim();
 
-                    @SuppressLint("DrawAllocation")
-                    BigDecimal num = new BigDecimal(max);
-                    max = num.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-                    @SuppressLint("DrawAllocation")
-                    BigDecimal num2 = new BigDecimal(min);
-                    min = num2.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-
                     if (max.matches("") || min.matches("")) {
                         showMessage.show(getString(R.string.num_button));
                     } else {
+                        @SuppressLint("DrawAllocation")
+                        BigDecimal num = new BigDecimal(max);
+                        max = num.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+                        @SuppressLint("DrawAllocation")
+                        BigDecimal num2 = new BigDecimal(min);
+                        min = num2.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+
                         ArrayList<String> sql = new ArrayList<>();
                         sql.clear();
 
@@ -238,5 +243,10 @@ public class NewImageAvtivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void setspinner() {
+        spinner2.setEnabled(true);
     }
 }

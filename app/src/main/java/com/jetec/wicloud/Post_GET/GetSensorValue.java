@@ -2,13 +2,17 @@ package com.jetec.wicloud.Post_GET;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.jetec.wicloud.Listener.GetSpinner;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.Value;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +23,15 @@ public class GetSensorValue {
     private Context context;
     private ArrayList<String> function;
     private String url;
+    private GetSpinner getSpinner;
 
-    public GetSensorValue(Context context){
+    public GetSensorValue(Context context) {
         this.context = context;
     }
 
-    public ArrayList<String> getValue(String modelId){
+    public ArrayList<String> getValue(String modelId, GetSpinner getSpinner) {
 
+        this.getSpinner = getSpinner;
         url = "https://api.tinkermode.com/devices/" + modelId + "/kv";
 
         function = new ArrayList<>();
@@ -48,33 +54,31 @@ public class GetSensorValue {
                         JSONObject responseObj = response.getJSONObject(0);
                         JSONObject responseObj2 = responseObj.getJSONObject("value");
                         JSONArray responseArr = responseObj2.getJSONArray("sensors");
-                        for(int i = 0; i < responseArr.length(); i++){
+                        for (int i = 0; i < responseArr.length(); i++) {
                             String text = responseArr.get(i).toString()
                                     .substring(0, responseArr.get(i).toString().indexOf(":"));
-                            if(text.matches("TEMPERATURE")){
+                            if (text.matches("TEMPERATURE")) {
                                 function.add(context.getString(R.string.sensor_temperature));
-                            }
-                            else if(text.matches("HUMIDITY")){
+                            } else if (text.matches("HUMIDITY")) {
                                 function.add(context.getString(R.string.sensor_humidity));
-                            }
-                            else if(text.matches("WIND_SPEED")){
+                            } else if (text.matches("WIND_SPEED")) {
                                 function.add(context.getString(R.string.sensor_wind_speed));
-                            }
-                            else if(text.matches("WIND_DIRECTION")){
+                            } else if (text.matches("WIND_DIRECTION")) {
                                 function.add(context.getString(R.string.sensor_wind_direction));
-                            }
-                            else if(text.matches("PRECIPITATION")){
+                            } else if (text.matches("PRECIPITATION")) {
                                 function.add(context.getString(R.string.sensor_precipitation));
-                            }
-                            else if(text.matches("VALUE")){
+                            } else if (text.matches("VALUE")) {
                                 function.add(context.getString(R.string.sensor_value));
+                            } else {
+                                function.add("Unknown");
                             }
                         }
+                        getSpinner.isGetspinner();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            }, error -> Log.d(TAG,"VolleyError = " + error.networkResponse)){
+            }, error -> Log.d(TAG, "VolleyError = " + error.networkResponse)) {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();

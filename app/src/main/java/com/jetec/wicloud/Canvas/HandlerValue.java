@@ -10,6 +10,8 @@ import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
+import com.jetec.wicloud.GetUnit;
 import com.jetec.wicloud.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +26,8 @@ public class HandlerValue extends View {
     private String name, model, sensor, max, min;
     private JSONObject jsonObject;
     private double value;
+    private GetUnit getUnit = new GetUnit();
+    private ImageView imageView;
 
     public HandlerValue(Context context, AttributeSet attrst) {
         super(context, attrst);
@@ -33,11 +37,11 @@ public class HandlerValue extends View {
         super(context, attrs, defStyle);
     }
 
-    public HandlerValue(Context context){
+    public HandlerValue(Context context) {
         super(context);
     }
 
-    public void set_context(Context context){
+    public void set_context(Context context) {
 
         this.context = context;
 
@@ -85,16 +89,16 @@ public class HandlerValue extends View {
         valueText.setStrokeWidth(1);
     }
 
-    public void setValue(JSONArray jsonArray, JSONObject jsonObject){
+    public void setValue(JSONArray jsonArray, JSONObject jsonObject, ImageView imageView) {
+        this.imageView = imageView;
         try {
             this.jsonObject = jsonObject;
-            if(jsonArray.get(0).toString().matches("Value")){
+            if (jsonArray.get(0).toString().matches("Value")) {
                 flag = 0;
                 name = jsonArray.get(1).toString();
                 model = jsonArray.get(2).toString();
                 sensor = jsonArray.get(3).toString();
-            }
-            else if(jsonArray.get(0).toString().matches("Image")){
+            } else if (jsonArray.get(0).toString().matches("Image")) {
                 flag = 1;
                 name = jsonArray.get(1).toString();
                 model = jsonArray.get(2).toString();
@@ -110,21 +114,28 @@ public class HandlerValue extends View {
     @Override
     public void onDraw(Canvas canvas) {
         try {
-            if(jsonObject != null) {
+            if (jsonObject != null) {
                 if (jsonObject.get("originDeviceId").toString().matches(model)) {
                     if (flag == 0) {
                         if (sensor.matches(context.getString(R.string.sensor_temperature))) {
+                            imageView.setBackgroundResource(R.drawable.temperature);
                             sensor = "temperature";
                         } else if (sensor.matches(context.getString(R.string.sensor_humidity))) {
+                            imageView.setBackgroundResource(R.drawable.humidity);
                             sensor = "humidity";
                         } else if (sensor.matches(context.getString(R.string.sensor_wind_speed))) {
+                            imageView.setBackgroundResource(R.drawable.windspeed);
                             sensor = "wind_speed";
                         } else if (sensor.matches(context.getString(R.string.sensor_wind_direction))) {
+                            imageView.setBackgroundResource(R.drawable.winddirection);
                             sensor = "wind_direction";
                         } else if (sensor.matches(context.getString(R.string.sensor_precipitation))) {
+                            imageView.setBackgroundResource(R.drawable.rain);
                             sensor = "precipitation";
                         } else if (sensor.matches(context.getString(R.string.sensor_value))) {
                             sensor = "value";
+                        } else {
+                            //sensor = "unknown";
                         }
 
                         @SuppressLint("DrawAllocation")
@@ -146,21 +157,28 @@ public class HandlerValue extends View {
                         float px = getResources().getDimension(R.dimen.canvasTextSize);
 
                         canvas.drawText(name, xPos, 2 * px, paintText);
-                        canvas.drawText(String.valueOf(value),xPos,yPos + px, paint);
+                        canvas.drawText(String.valueOf(value) + getUnit.unit(sensor), xPos, yPos + px, paint);
                     }
-                    if(flag == 1){
+                    if (flag == 1) {
                         if (sensor.matches(context.getString(R.string.sensor_temperature))) {
+                            imageView.setBackgroundResource(R.drawable.temperature);
                             sensor = "temperature";
                         } else if (sensor.matches(context.getString(R.string.sensor_humidity))) {
+                            imageView.setBackgroundResource(R.drawable.humidity);
                             sensor = "humidity";
                         } else if (sensor.matches(context.getString(R.string.sensor_wind_speed))) {
+                            imageView.setBackgroundResource(R.drawable.windspeed);
                             sensor = "wind_speed";
                         } else if (sensor.matches(context.getString(R.string.sensor_wind_direction))) {
+                            imageView.setBackgroundResource(R.drawable.winddirection);
                             sensor = "wind_direction";
                         } else if (sensor.matches(context.getString(R.string.sensor_precipitation))) {
+                            imageView.setBackgroundResource(R.drawable.rain);
                             sensor = "precipitation";
                         } else if (sensor.matches(context.getString(R.string.sensor_value))) {
                             sensor = "value";
+                        } else {
+                            //sensor = "unknown";
                         }
 
                         @SuppressLint("DrawAllocation")
@@ -192,25 +210,25 @@ public class HandlerValue extends View {
                         double m = Double.valueOf(min);
                         double wing;
 
-                        if(value > M){
+                        if (value > M) {
                             wing = 180.00;
-                        }
-                        else if(value < m){
+                        } else if (value < m) {
                             wing = 0.00;
-                        }
-                        else {
+                        } else {
                             wing = ((value - m) / (M - m)) * 180;
                         }
 
                         canvas.drawArc(oval1, 180, 180, false, emptyPaint);
                         canvas.drawArc(oval1, 180, (float) wing, false, valuePaint);
-                        canvas.drawText(min, xPos - yPos, (int)(ovalbottom - yPos + 1.75 * px), valueText);
-                        canvas.drawText(max, xPos + yPos, (int)(ovalbottom - yPos + 1.75 * px), valueText);
-                        canvas.drawText(String.valueOf(value), xPos, (int)(ovalbottom - yPos + 2.5 * px), valueText);
+                        canvas.drawText(min, xPos - yPos, (int) (ovalbottom - yPos + 1.75 * px), valueText);
+                        canvas.drawText(max, xPos + yPos, (int) (ovalbottom - yPos + 1.75 * px), valueText);
+                        canvas.drawText(String.valueOf(value) + getUnit.unit(sensor), xPos, (int) (ovalbottom - yPos + 2.5 * px), valueText);
                         canvas.drawCircle(xPos, ovalbottom - yPos, px, pointerPanit);
 
                         double x, y, Rx1, Ry1, Rx2, Ry2;
+                        //noinspection IntegerDivisionInFloatingPointContext
                         x = xPos + Math.cos(Math.toRadians((180 + (float) wing))) * (yPos * 2 / 3);   //180:startAngle 60:sweepAngle
+                        //noinspection IntegerDivisionInFloatingPointContext
                         y = ovalbottom - yPos + Math.sin(Math.toRadians((180 + (float) wing))) * (yPos * 2 / 3);   //width:(yPos * 2 / 3)
                         Rx1 = xPos + Math.cos(Math.toRadians(((180 + (float) wing) + 90))) * px;
                         Rx2 = xPos + Math.cos(Math.toRadians(((180 + (float) wing) - 90))) * px;
