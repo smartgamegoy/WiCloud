@@ -278,13 +278,13 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 //            if (socket.states())
 //                socket.closeConnect();
             Log.d(TAG, "硬體資訊");
-        } else if (id == R.id.nav_alert) {
+        } /*else if (id == R.id.nav_alert) {
             vibrator.vibrate(100);
 //            socketHandler.stopHandler();
 //            if (socket.states())
 //                socket.closeConnect();
             Log.d(TAG, "警報");
-        } else if (id == R.id.nav_logout) {
+        }*/ else if (id == R.id.nav_logout) {
             vibrator.vibrate(100);
             if (userAccount.getCount() > 1) {
                 userAccount.delete();

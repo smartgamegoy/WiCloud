@@ -366,14 +366,14 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
 //                socket.closeConnect();
             Log.d(TAG, "硬體資訊");
             return true;
-        } else if (id == R.id.nav_alert) {
+        } /*else if (id == R.id.nav_alert) {
             vibrator.vibrate(100);
 //            socketHandler.stopHandler();
 //            if (socket.states())
 //                socket.closeConnect();
             Log.d(TAG, "警報");
             return true;
-        } else if (id == R.id.nav_logout) {
+        }*/ else if (id == R.id.nav_logout) {
             vibrator.vibrate(100);
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
