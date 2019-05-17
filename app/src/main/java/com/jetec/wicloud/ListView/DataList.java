@@ -16,8 +16,6 @@ import com.jetec.wicloud.Screen;
 import com.jetec.wicloud.Value;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,47 +25,51 @@ public class DataList extends BaseAdapter {
     private String TAG = "DataList";
     private ArrayList<HashMap<String, String>> getJSON;
     private Context context;
-    private LayoutInflater inflater;
     private List<HandlerValue> saveView;
+    private List<ViewGroup> viewList;
 
-    public DataList(Context context, ArrayList<HashMap<String, String>> getJSON){
+    @SuppressLint("InflateParams")
+    public DataList(Context context, ArrayList<HashMap<String, String>> getJSON) {
         saveView = new ArrayList<>();
+        viewList = new ArrayList<>();
         saveView.clear();
-        for(int i = 0; i < getJSON.size(); i++){
+        viewList.clear();
+        for (int i = 0; i < getJSON.size(); i++) {
+            ViewGroup view;
+            LayoutInflater inflater = LayoutInflater.from(context);
+            view = (ViewGroup) inflater.inflate(R.layout.socketlist, null);
             HandlerValue handlerValue = new HandlerValue(context);
             saveView.add(handlerValue);
+            viewList.add(view);
         }
         this.context = context;
         this.getJSON = getJSON;
-        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return getJSON.size();
+        Log.d(TAG, "saveView.size() = " + saveView.size());
+        return saveView.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return getJSON.get(position);
+        Log.d(TAG, "saveView.get(position) = " + saveView.get(position));
+        return saveView.get(position);
     }
 
     @Override
     public long getItemId(int position) {
+        Log.d(TAG, "position = " + position);
         return position;
     }
 
-    @SuppressLint({"InflateParams", "WrongConstant"})
+    @SuppressLint({"InflateParams", "WrongConstant", "ViewHolder"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewGroup view;
-
-        if (convertView != null) {
-            view = (ViewGroup) convertView;
-        } else {
-            view = (ViewGroup) inflater.inflate(R.layout.socketlist, null);
-        }
+        view = viewList.get(position);
 
         Screen screen = new Screen();
         DisplayMetrics dm = screen.getScreen(context);
@@ -89,7 +91,7 @@ public class DataList extends BaseAdapter {
             handlerValue.set_context(context);
             handlerValue.setValue(jsonArray, Value.socketvalue, imageView);
 
-            if(handlerValue.getParent() != null) {
+            if (handlerValue.getParent() != null) {
                 ((ViewGroup) handlerValue.getParent()).removeView(handlerValue);
             }
             linearLayout.addView(handlerValue);

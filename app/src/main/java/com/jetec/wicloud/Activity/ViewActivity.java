@@ -353,6 +353,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void getMessage() {
+        //listView.setAdapter(dataList);
         dataList.notifyDataSetChanged();
     }
 }
