@@ -52,25 +52,31 @@ public class GetSensorValue {
                 if (response != null) {
                     try {
                         JSONObject responseObj = response.getJSONObject(0);
+                        Log.d(TAG, "responseObj = " + responseObj);
                         JSONObject responseObj2 = responseObj.getJSONObject("value");
+                        Log.d(TAG, "responseObj2 = " + responseObj2);
                         JSONArray responseArr = responseObj2.getJSONArray("sensors");
+                        Log.d(TAG, "responseArr = " + responseArr);
                         for (int i = 0; i < responseArr.length(); i++) {
                             String text = responseArr.get(i).toString()
                                     .substring(0, responseArr.get(i).toString().indexOf(":"));
+                            String text2 = responseArr.get(i).toString()
+                                    .substring(responseArr.get(i).toString().indexOf(":") + 1);
+                            Log.d(TAG, "text2 = " + text2);
                             if (text.matches("TEMPERATURE")) {
-                                function.add(context.getString(R.string.sensor_temperature));
+                                function.add(context.getString(R.string.sensor_temperature) + text2);
                             } else if (text.matches("HUMIDITY")) {
-                                function.add(context.getString(R.string.sensor_humidity));
+                                function.add(context.getString(R.string.sensor_humidity) + text2);
                             } else if (text.matches("WIND_SPEED")) {
-                                function.add(context.getString(R.string.sensor_wind_speed));
+                                function.add(context.getString(R.string.sensor_wind_speed) + text2);
                             } else if (text.matches("WIND_DIRECTION")) {
-                                function.add(context.getString(R.string.sensor_wind_direction));
+                                function.add(context.getString(R.string.sensor_wind_direction) + text2);
                             } else if (text.matches("PRECIPITATION")) {
-                                function.add(context.getString(R.string.sensor_precipitation));
+                                function.add(context.getString(R.string.sensor_precipitation) + text2);
                             } else if (text.matches("VALUE")) {
-                                function.add(context.getString(R.string.sensor_value));
+                                function.add(context.getString(R.string.sensor_value) + text2);
                             } else {
-                                function.add("Unknown");
+                                function.add("Unknown" + text2);
                             }
                         }
                         getSpinner.isGetspinner();

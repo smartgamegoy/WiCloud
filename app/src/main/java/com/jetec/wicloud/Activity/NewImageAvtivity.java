@@ -22,9 +22,11 @@ import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.ShowMessage;
 import com.jetec.wicloud.SpinnerList.ValueSpinner1;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,14 +179,14 @@ public class NewImageAvtivity extends AppCompatActivity implements SpinnerListen
         });
     }
 
-    private void showList(){
+    private void showList() {
         Intent intent = new Intent(this, ViewActivity.class);
         intent.putExtra("responseJson", responseJson.toString());
         startActivity(intent);
         finish();
     }
 
-    private void goback(){
+    private void goback() {
         Intent intent = new Intent(this, AddDeviceActivity.class);
         intent.putExtra("responseJson", responseJson.toString());
         startActivity(intent);

@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.jetec.wicloud.GetUnit;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 
 public class HandlerValue extends View {
 
+    private String TAG = "HandlerValue";
     private int flag;
     private Context context;
     private Paint paint, paintText, valuePaint, emptyPaint, pointerPanit, circlePaint, valueText;
@@ -117,25 +119,25 @@ public class HandlerValue extends View {
             if (jsonObject != null) {
                 if (jsonObject.get("originDeviceId").toString().matches(model)) {
                     if (flag == 0) {
-                        if (sensor.matches(context.getString(R.string.sensor_temperature))) {
+                        if (sensor.contains(context.getString(R.string.sensor_temperature))) {
                             imageView.setBackgroundResource(R.drawable.temperature);
-                            sensor = "temperature";
-                        } else if (sensor.matches(context.getString(R.string.sensor_humidity))) {
+                            sensor = "temperature" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_humidity))) {
                             imageView.setBackgroundResource(R.drawable.humidity);
-                            sensor = "humidity";
-                        } else if (sensor.matches(context.getString(R.string.sensor_wind_speed))) {
+                            sensor = "humidity" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_wind_speed))) {
                             imageView.setBackgroundResource(R.drawable.windspeed);
-                            sensor = "wind_speed";
-                        } else if (sensor.matches(context.getString(R.string.sensor_wind_direction))) {
+                            sensor = "wind_speed" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_wind_direction))) {
                             imageView.setBackgroundResource(R.drawable.winddirection);
-                            sensor = "wind_direction";
-                        } else if (sensor.matches(context.getString(R.string.sensor_precipitation))) {
+                            sensor = "wind_direction" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_precipitation))) {
                             imageView.setBackgroundResource(R.drawable.rain);
-                            sensor = "precipitation";
-                        } else if (sensor.matches(context.getString(R.string.sensor_value))) {
-                            sensor = "value";
+                            sensor = "precipitation" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_value))) {
+                            sensor = "value" + ":" + sensor.substring(sensor.length() - 1);
                         } else {
-                            //sensor = "unknown";
+                            sensor = "unknown";
                         }
 
                         @SuppressLint("DrawAllocation")
@@ -160,25 +162,25 @@ public class HandlerValue extends View {
                         canvas.drawText(String.valueOf(value) + getUnit.unit(sensor), xPos, yPos + px, paint);
                     }
                     if (flag == 1) {
-                        if (sensor.matches(context.getString(R.string.sensor_temperature))) {
+                        if (sensor.contains(context.getString(R.string.sensor_temperature))) {
                             imageView.setBackgroundResource(R.drawable.temperature);
-                            sensor = "temperature";
-                        } else if (sensor.matches(context.getString(R.string.sensor_humidity))) {
+                            sensor = "temperature" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_humidity))) {
                             imageView.setBackgroundResource(R.drawable.humidity);
-                            sensor = "humidity";
-                        } else if (sensor.matches(context.getString(R.string.sensor_wind_speed))) {
+                            sensor = "humidity" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_wind_speed))) {
                             imageView.setBackgroundResource(R.drawable.windspeed);
-                            sensor = "wind_speed";
-                        } else if (sensor.matches(context.getString(R.string.sensor_wind_direction))) {
+                            sensor = "wind_speed" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_wind_direction))) {
                             imageView.setBackgroundResource(R.drawable.winddirection);
-                            sensor = "wind_direction";
-                        } else if (sensor.matches(context.getString(R.string.sensor_precipitation))) {
+                            sensor = "wind_direction" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_precipitation))) {
                             imageView.setBackgroundResource(R.drawable.rain);
-                            sensor = "precipitation";
-                        } else if (sensor.matches(context.getString(R.string.sensor_value))) {
-                            sensor = "value";
+                            sensor = "precipitation" + ":" + sensor.substring(sensor.length() - 1);
+                        } else if (sensor.contains(context.getString(R.string.sensor_value))) {
+                            sensor = "value" + ":" + sensor.substring(sensor.length() - 1);
                         } else {
-                            //sensor = "unknown";
+                            sensor = "unknown";
                         }
 
                         @SuppressLint("DrawAllocation")
@@ -188,6 +190,7 @@ public class HandlerValue extends View {
                         for (int i = 0; i < timeSeriesData.length(); i++) {
                             @SuppressLint("DrawAllocation")
                             JSONObject obj = new JSONObject(timeSeriesData.get(i).toString());
+                            Log.d(TAG, "seriesId = " + obj.get("seriesId").toString());
                             if (obj.get("seriesId").toString().contains(sensor)) {
                                 value = Double.valueOf(obj.get("value").toString());
                                 @SuppressLint("DrawAllocation")

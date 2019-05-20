@@ -20,16 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.jetec.wicloud.ListView.DataList;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.Screen;
 import com.jetec.wicloud.Value;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
