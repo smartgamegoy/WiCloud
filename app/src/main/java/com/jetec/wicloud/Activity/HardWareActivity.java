@@ -171,22 +171,13 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void showlist(JSONArray homevalue) {
-        try {
             if (homevalue == null) {
                 textView.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
             } else {
                 listView.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.GONE);
-
-                for (int i = 0; i < homevalue.length(); i++) {
-                    JSONObject homeobject = new JSONObject(homevalue.get(i).toString());
-                    Log.d(TAG, "homeobject" + i + " = " + homeobject);
-
-                }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            Log.d(TAG, "Value.model = " + Value.model);
     }
 }
