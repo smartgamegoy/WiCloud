@@ -59,4 +59,6 @@
     <string name="pastdata">Past data</string>
     <string name="count">device(s)</string>
     <string name="connect">(disconnected)</string>
+    <string name="setinformation">Setting Imformation</string>
+    <string name="nowdata">Real time data</string>
 </resources>

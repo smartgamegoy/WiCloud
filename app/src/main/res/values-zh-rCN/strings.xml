@@ -59,4 +59,6 @@
     <string name="pastdata">历史数据</string>
     <string name="count">个装置</string>
     <string name="connect">(离线)</string>
+    <string name="setinformation">设定资讯</string>
+    <string name="nowdata">实时数据</string>
 </resources>

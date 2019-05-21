@@ -59,4 +59,6 @@
     <string name="pastdata">歷史數據</string>
     <string name="count">個裝置</string>
     <string name="connect">(離線)</string>
+    <string name="setinformation">設定資訊</string>
+    <string name="nowdata">即時數據</string>
 </resources>

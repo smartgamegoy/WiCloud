@@ -116,7 +116,6 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
             listView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
 
-            //Value.dataList = new DataList(this, deviceList.getJSON());
             Log.d(TAG, "deviceList.getJSON() = " + deviceList.getJSON());
             dataList = new DataList(this, deviceList.getJSON());
             listView.setAdapter(dataList);

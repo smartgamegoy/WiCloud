@@ -14,21 +14,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.jetec.wicloud.ListView.AllStatusList;
+import com.jetec.wicloud.Listener.GetSocket;
+import com.jetec.wicloud.Listener.SocketListener;
 import com.jetec.wicloud.R;
+import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.Value;
+import com.jetec.wicloud.WebSocket.Socket;
+import com.jetec.wicloud.WebSocket.SocketHandler;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ListFunctionActivity extends AppCompatActivity{
+public class ListFunctionActivity extends AppCompatActivity implements SocketListener {
 
     private String TAG = "ViewActivity";
     private Vibrator vibrator;
     private JSONObject responseJson;
-    private ArrayList<String> modelList, deviceList;
+    private ArrayList<String> modelList, deviceListjson;
     private int position;
     private ListView listView;
+    private DeviceList deviceList = new DeviceList(this);
+    private SocketHandler socketHandler = new SocketHandler();
+    private Socket socket = new Socket();
+    private GetSocket getSocket = new GetSocket();
+    private AllStatusList allStatusList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +62,15 @@ public class ListFunctionActivity extends AppCompatActivity{
             Intent intent = getIntent();
             responseJson = new JSONObject(intent.getStringExtra("responseJson"));
             modelList = intent.getStringArrayListExtra("modelList");
-            deviceList = intent.getStringArrayListExtra("deviceList");
+            deviceListjson = intent.getStringArrayListExtra("deviceList");
             position = intent.getIntExtra("position", position);
+            showlist();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "position = " + position);
-        showlist();
     }
 
-    private void showlist(){
+    private void showlist() throws JSONException {
         setContentView(R.layout.homeview);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -69,8 +82,11 @@ public class ListFunctionActivity extends AppCompatActivity{
         listView = findViewById(R.id.listview);
         TextView textView = findViewById(R.id.nodevice);
         textView.setVisibility(View.GONE);
+        getSocket.setListener(this);
 
+        allStatusList = new AllStatusList(this, deviceListjson, position);
 
+        socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket, getSocket));
     }
 
     private void goback() {
@@ -161,5 +177,10 @@ public class ListFunctionActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void getMessage() {
+        listView.setAdapter(allStatusList);
     }
 }

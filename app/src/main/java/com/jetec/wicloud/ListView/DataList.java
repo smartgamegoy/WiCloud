@@ -26,7 +26,7 @@ public class DataList extends BaseAdapter {
     private ArrayList<HashMap<String, String>> getJSON;
     private Context context;
     private List<HandlerValue> saveView;
-    private List<ViewGroup> viewList;
+    private List<View> viewList;
 
     @SuppressLint("InflateParams")
     public DataList(Context context, ArrayList<HashMap<String, String>> getJSON) {
@@ -35,9 +35,9 @@ public class DataList extends BaseAdapter {
         saveView.clear();
         viewList.clear();
         for (int i = 0; i < getJSON.size(); i++) {
-            ViewGroup view;
+            View view;
             LayoutInflater inflater = LayoutInflater.from(context);
-            view = (ViewGroup) inflater.inflate(R.layout.socketlist, null);
+            view = inflater.inflate(R.layout.socketlist, null);
             HandlerValue handlerValue = new HandlerValue(context);
             saveView.add(handlerValue);
             viewList.add(view);

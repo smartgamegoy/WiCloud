@@ -48,7 +48,6 @@ public class HardwareList extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
 
-
         if (convertView != null) {
             view = convertView;
         } else {
