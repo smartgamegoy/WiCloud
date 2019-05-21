@@ -22,8 +22,8 @@ public class GetArrayRequest extends Request<JSONArray> {
         this.params = params;
     }
 
-    GetArrayRequest(String url, Response.Listener<JSONArray> reponseListener,
-                              Response.ErrorListener errorListener) {
+    public GetArrayRequest(String url, Response.Listener<JSONArray> reponseListener,
+                           Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
         this.listener = reponseListener;
     }

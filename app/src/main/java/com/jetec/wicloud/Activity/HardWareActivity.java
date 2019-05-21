@@ -17,9 +17,11 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jetec.wicloud.ListView.HardwareList;
 import com.jetec.wicloud.Listener.GetHardware;
 import com.jetec.wicloud.Listener.HardwareListener;
 import com.jetec.wicloud.LoadHandler;
@@ -28,10 +30,12 @@ import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.UserAccount;
 import com.jetec.wicloud.Value;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class HardWareActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HardwareListener {
@@ -45,6 +49,7 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     private GetHardware getHardware = new GetHardware();
     private ListView listView;
     private TextView textView;
+    private ArrayList<String> modelList, deviceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +106,33 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
         homeId.gethomeList(loadHandler, getHardware);
 
     }
+
+    private void listfuction(int position){
+        Intent intent = new Intent(this, ChartActivity.class);
+        intent.putStringArrayListExtra("modelList", modelList);
+        intent.putStringArrayListExtra("deviceList", deviceList);
+        intent.putExtra("position", position);
+        intent.putExtra("response", responseJson.toString());
+        startActivity(intent);
+        finish();
+    }
+
+    private AdapterView.OnItemClickListener itemOnClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            try {
+                String device = modelList.get(position);
+                JSONObject devicejson = new JSONObject(device);
+                String connect = devicejson.get("isConnected").toString();
+                if (connect.contains("true")) {
+                    vibrator.vibrate(100);
+                    listfuction(position);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     public boolean onKeyDown(int key, KeyEvent event) {
         switch (key) {
@@ -170,14 +202,19 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    public void showlist(JSONArray homevalue) {
-            if (homevalue == null) {
-                textView.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
-            } else {
-                listView.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
-            }
-            Log.d(TAG, "Value.model = " + Value.model);
+    public void showlist(List<String> modelList, List<String> deviceList) {
+        listView.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.GONE);
+
+        this.modelList = new ArrayList<>();
+        this.deviceList = new ArrayList<>();
+        this.modelList.clear();
+        this.deviceList.clear();
+        this.modelList.addAll(modelList);
+        this.deviceList.addAll(deviceList);
+
+        HardwareList hardwareList = new HardwareList(this, modelList, deviceList);
+        listView.setAdapter(hardwareList);
+        listView.setOnItemClickListener(itemOnClick);
     }
 }

@@ -56,4 +56,6 @@
     <string name="time">Time:</string>
     <string name="value">Value:</string>
     <string name="pastdata">Past data</string>
+    <string name="count">device(s)</string>
+    <string name="connect">(disconnected)</string>
 </resources>

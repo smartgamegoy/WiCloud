@@ -68,7 +68,7 @@ public class DataList extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewGroup view;
+        View view;
         view = viewList.get(position);
 
         Screen screen = new Screen();

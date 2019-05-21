@@ -10,4 +10,5 @@
     <dimen name="canvasTextSize">16sp</dimen>
     <dimen name="canvasImageSize">30dp</dimen>
     <dimen name="canvasheight">167dp</dimen>
+    <dimen name="textviewheight">80dp</dimen>
 </resources>

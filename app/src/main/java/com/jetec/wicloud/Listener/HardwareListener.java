@@ -1,7 +1,7 @@
 package com.jetec.wicloud.Listener;
 
-import org.json.JSONArray;
+import java.util.List;
 
 public interface HardwareListener {
-    void showlist(JSONArray homevalue);
+    void showlist(List<String> modelList, List<String> deviceList);
 }

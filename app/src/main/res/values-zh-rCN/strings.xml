@@ -56,4 +56,6 @@
     <string name="time">时间:</string>
     <string name="value">数值:</string>
     <string name="pastdata">历史数据</string>
+    <string name="count">个装置</string>
+    <string name="connect">(离线)</string>
 </resources>
