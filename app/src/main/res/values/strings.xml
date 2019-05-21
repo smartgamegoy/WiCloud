@@ -11,6 +11,7 @@
     <string name="app_message">Do you want to close this app?</string>
     <string name="app_message_b1">Exit</string>
     <string name="app_message_b2">Cancel</string>
+    <string name="goback">back</string>
     <string name="app_log_in">Log in</string>
     <string name="login">Wrong! Your account or password is empty!</string>
     <string name="loginerror">Account or password incorrect!</string>

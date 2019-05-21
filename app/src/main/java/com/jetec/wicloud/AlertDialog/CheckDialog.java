@@ -34,7 +34,7 @@ public class CheckDialog {
 
     private static final String TAG = "CheckDialog";
     private Context context;
-    private String title, message, sure, del, cancel, name;
+    private String title, message, sure, del, cancel;
     private int position;
     private DeviceList deviceList;
     private Vibrator vibrator;
@@ -42,20 +42,22 @@ public class CheckDialog {
     private ListView listView;
     private TextView textView;
     private Parcelable state;
+    private DataList dataList;
 
     public CheckDialog(Context context, String title, String message, String sure, String del,
-                       String cancel, String name, int position, Vibrator vibrator, ListView listView, TextView textView) {
+                       String cancel, int position, Vibrator vibrator, ListView listView,
+                       TextView textView, DataList dataList) {
         this.context = context;
         this.title = title;
         this.message = message;
         this.sure = sure;
         this.del = del;
         this.cancel = cancel;
-        this.name = name;
         this.position = position;
         this.vibrator = vibrator;
         this.listView = listView;
         this.textView = textView;
+        this.dataList = dataList;
         inflater = LayoutInflater.from(context);
         deviceList = new DeviceList(context);
     }
@@ -158,11 +160,7 @@ public class CheckDialog {
                         JSONArray newArray = new JSONArray(newjson);
                         assert key != null;
                         deviceList.update(Integer.valueOf(key), newArray.toString());
-                        Value.dataList = new DataList(context, deviceList.getJSON());
-                        relocate();
-                        listView.setAdapter(Value.dataList);
-                        if (state != null)
-                            listView.onRestoreInstanceState(state);
+                        dataList.setnewjson(deviceList.getJSON());
                         progressDialog.dismiss();
                         deviceList.close();
                     } catch (JSONException e) {
@@ -256,11 +254,7 @@ public class CheckDialog {
                         JSONArray newArray = new JSONArray(newjson);
                         assert key != null;
                         deviceList.update(Integer.valueOf(key), newArray.toString());
-                        Value.dataList = new DataList(context, deviceList.getJSON());
-                        relocate();
-                        listView.setAdapter(Value.dataList);
-                        if (state != null)
-                            listView.onRestoreInstanceState(state);
+                        dataList.setnewjson(deviceList.getJSON());
                         progressDialog.dismiss();
                         deviceList.close();
                     } catch (JSONException e) {

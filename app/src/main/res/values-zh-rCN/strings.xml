@@ -11,6 +11,7 @@
     <string name="app_message">确定要离开此程式?</string>
     <string name="app_message_b1">离开</string>
     <string name="app_message_b2">取消</string>
+    <string name="goback">回车</string>
     <string name="app_log_in">登入</string>
     <string name="login">错误! 帐号或密码为空!</string>
     <string name="loginerror">帐号或密码错误!</string>

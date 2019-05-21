@@ -101,4 +101,8 @@ public class DataList extends BaseAdapter {
 
         return view;
     }
+
+    public void setnewjson(ArrayList<HashMap<String, String>> getJSON){
+        this.getJSON = getJSON;
+    }
 }

@@ -15,12 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.jetec.wicloud.ListView.HardwareList;
 import com.jetec.wicloud.Listener.GetHardware;
 import com.jetec.wicloud.Listener.HardwareListener;
@@ -29,11 +29,8 @@ import com.jetec.wicloud.Post_GET.HomeId;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.UserAccount;
 import com.jetec.wicloud.Value;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -108,11 +105,11 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void listfuction(int position){
-        Intent intent = new Intent(this, ChartActivity.class);
+        Intent intent = new Intent(this, ListFunctionActivity.class);
         intent.putStringArrayListExtra("modelList", modelList);
         intent.putStringArrayListExtra("deviceList", deviceList);
         intent.putExtra("position", position);
-        intent.putExtra("response", responseJson.toString());
+        intent.putExtra("responseJson", responseJson.toString());
         startActivity(intent);
         finish();
     }
@@ -133,6 +130,13 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
             }
         }
     };
+
+    private void goback() {
+        Intent intent = new Intent(this, ViewActivity.class);
+        intent.putExtra("responseJson", responseJson.toString());
+        startActivity(intent);
+        finish();
+    }
 
     public boolean onKeyDown(int key, KeyEvent event) {
         switch (key) {
@@ -159,16 +163,36 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_goback) {
+            vibrator.vibrate(100);
+            goback();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
             vibrator.vibrate(100);
-            Intent intent = new Intent(this, ViewActivity.class);
-            intent.putExtra("responseJson", responseJson.toString());
-            startActivity(intent);
-            finish();
+            goback();
         } else if (id == R.id.nav_hardware) {
             vibrator.vibrate(100);
         } else if (id == R.id.nav_logout) {
@@ -216,5 +240,42 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
         HardwareList hardwareList = new HardwareList(this, modelList, deviceList);
         listView.setAdapter(hardwareList);
         listView.setOnItemClickListener(itemOnClick);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+        userAccount.close();
     }
 }

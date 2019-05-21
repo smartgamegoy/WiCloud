@@ -135,11 +135,11 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
                                     getString(R.string.dialog_sure),
                                     getString(R.string.dialog_del),
                                     getString(R.string.app_message_b2),
-                                    name,
                                     position,
                                     vibrator,
                                     listView,
-                                    textView);
+                                    textView,
+                                    dataList);
                     checkDialog.show_Dialog();
                 } catch (JSONException e) {
                     e.printStackTrace();

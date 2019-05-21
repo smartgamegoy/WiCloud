@@ -55,6 +55,14 @@
             android:largeHeap="true"
             tools:ignore="InnerclassSeparator" />
         <activity
+            android:name="com.jetec.wicloud.Activity.ListFunctionActivity"
+            android:screenOrientation="user"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"
+            android:largeHeap="true"
+            tools:ignore="InnerclassSeparator" />
+        <activity
             android:name="com.jetec.wicloud.Activity.ChartActivity"
             android:screenOrientation="user"
             android:theme="@style/AppTheme.NoActionBar"
