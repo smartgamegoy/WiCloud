@@ -58,7 +58,15 @@
     <string name="value">数值:</string>
     <string name="pastdata">历史数据</string>
     <string name="count">个装置</string>
-    <string name="connect">(离线)</string>
+    <string name="connect">(掉线)</string>
     <string name="setinformation">设定资讯</string>
     <string name="nowdata">实时数据</string>
+    <string name="connectstatus">连线状态</string>
+    <string name="sensors">感测器数量</string>
+    <string name="interval">数据间隔</string>
+    <string name="intervals">曲线间隔</string>
+    <string name="checkconnect">已连线</string>
+    <string name="checkconnects">掉线</string>
+    <string name="seconds">秒</string>
+    <string name="hour">小时</string>
 </resources>

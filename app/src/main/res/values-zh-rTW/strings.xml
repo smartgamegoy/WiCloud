@@ -61,4 +61,12 @@
     <string name="connect">(離線)</string>
     <string name="setinformation">設定資訊</string>
     <string name="nowdata">即時數據</string>
-</resources>
+    <string name="connectstatus">連線狀態</string>
+    <string name="sensors">感測器數量</string>
+    <string name="interval">數據間隔</string>
+    <string name="intervals">曲線間隔</string>
+    <string name="checkconnect">已連線</string>
+    <string name="checkconnects">離線</string>
+    <string name="seconds">秒</string>
+    <string name="hour">小時</string>
+    </resources>

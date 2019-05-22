@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.util.Objects;
 
 public class Loading {

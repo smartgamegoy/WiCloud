@@ -112,17 +112,15 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
         if (seriesId.contains("precipitation")) {
             url = "https://api.tinkermode.com/homes/744/smartModules/tsdb/timeSeries/" + seriesId +
                     "/data?begin=" + olddate + "&end=" + nowdate + "&aggregation=sum";
-        }
-        else {
+        } else {
             url = "https://api.tinkermode.com/homes/744/smartModules/tsdb/timeSeries/" + seriesId +
                     "/data?begin=" + olddate + "&end=" + nowdate + "&aggregation=avg";
         }
 
         Log.d(TAG, "url = " + url);
-        if(url.contains("wind_direction")){
+        if (url.contains("wind_direction")) {
             caculator(url);
-        }
-        else {
+        } else {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
             GetObjectRequest getObjectRequest = new GetObjectRequest(url,
@@ -144,9 +142,9 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    private void setPageView(){
-        Log.d(TAG,"timeList = " + timeList);
-        Log.d(TAG,"valueList = " + valueList);
+    private void setPageView() {
+        Log.d(TAG, "timeList = " + timeList);
+        Log.d(TAG, "valueList = " + valueList);
 
         Collections.reverse(timeList);
         Collections.reverse(valueList);
@@ -160,7 +158,7 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
         showchart.startdraw(select, timeList, valueList);
     }
 
-    private void caculator(String url){
+    private void caculator(String url) {
         String direction_x = url.replace("direction", "direction_x");
         String direction_y = url.replace("direction", "direction_y");
 
@@ -205,7 +203,7 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
-    private void analysisjson_XY(){
+    private void analysisjson_XY() {
 
         timeList = new ArrayList<>();
         valueList = new ArrayList<>();
@@ -294,16 +292,20 @@ public class ChartActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    private void goback() {
+        Intent intent = new Intent(this, ViewActivity.class);
+        intent.putExtra("responseJson", responseJson.toString());
+        startActivity(intent);
+        finish();
+    }
+
     public boolean onKeyDown(int key, KeyEvent event) {
         switch (key) {
             case KeyEvent.KEYCODE_SEARCH:
                 break;
             case KeyEvent.KEYCODE_BACK: {
                 vibrator.vibrate(100);
-                Intent intent = new Intent(this, ViewActivity.class);
-                intent.putExtra("responseJson", responseJson.toString());
-                startActivity(intent);
-                finish();
+                goback();
             }
             break;
             case KeyEvent.KEYCODE_DPAD_CENTER:

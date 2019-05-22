@@ -28,6 +28,11 @@ public class HardwareList extends BaseAdapter {
         this.deviceList = deviceList;
     }
 
+    public void resetList(List<String> modelList, List<String> deviceList){
+        this.modelList = modelList;
+        this.deviceList = deviceList;
+    }
+
     @Override
     public int getCount() {
         return modelList.size();

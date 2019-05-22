@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.jetec.wicloud.ListView.HardwareList;
 import com.jetec.wicloud.Listener.GetHardware;
 import com.jetec.wicloud.Listener.HardwareListener;
@@ -29,8 +31,10 @@ import com.jetec.wicloud.Post_GET.HomeId;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.UserAccount;
 import com.jetec.wicloud.Value;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +51,8 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     private ListView listView;
     private TextView textView;
     private ArrayList<String> modelList, deviceList;
+    private Handler mHandler;
+    private HardwareList hardwareList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +105,13 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
 
         loadHandler.setload();
         loadHandler.startload(getString(R.string.process));
+        mHandler = new Handler();
         getHardware.setListener(this);
         homeId.gethomeList(loadHandler, getHardware);
-
     }
 
-    private void listfuction(int position){
+    private void listfuction(int position) {
         Intent intent = new Intent(this, ListFunctionActivity.class);
-        intent.putStringArrayListExtra("modelList", modelList);
         intent.putStringArrayListExtra("deviceList", deviceList);
         intent.putExtra("position", position);
         intent.putExtra("responseJson", responseJson.toString());
@@ -237,9 +242,23 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
         this.modelList.addAll(modelList);
         this.deviceList.addAll(deviceList);
 
-        HardwareList hardwareList = new HardwareList(this, modelList, deviceList);
-        listView.setAdapter(hardwareList);
-        listView.setOnItemClickListener(itemOnClick);
+        if (listView.getAdapter() == null) {
+            hardwareList = new HardwareList(this, modelList, deviceList);
+            listView.setAdapter(hardwareList);
+            listView.setOnItemClickListener(itemOnClick);
+        } else {
+            hardwareList.resetList(modelList, deviceList);
+            hardwareList.notifyDataSetChanged();
+        }
+        getHardware.resethome();
+    }
+
+    @Override
+    public void regethomeid() {
+        mHandler.postDelayed(() -> {
+            mHandler.removeCallbacksAndMessages(null);
+            homeId.gethomeList(loadHandler, getHardware);
+        }, 5000);
     }
 
     @Override
@@ -276,6 +295,7 @@ public class HardWareActivity extends AppCompatActivity implements NavigationVie
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+        mHandler.removeCallbacksAndMessages(null);
         userAccount.close();
     }
 }

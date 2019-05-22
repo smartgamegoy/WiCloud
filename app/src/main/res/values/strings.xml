@@ -58,7 +58,15 @@
     <string name="value">Value:</string>
     <string name="pastdata">Past data</string>
     <string name="count">device(s)</string>
-    <string name="connect">(disconnected)</string>
+    <string name="connect">(Disconnected)</string>
     <string name="setinformation">Setting Imformation</string>
     <string name="nowdata">Real time data</string>
+    <string name="connectstatus">Status</string>
+    <string name="sensors">Sensor quantity</string>
+    <string name="interval">Data interval</string>
+    <string name="intervals">Graph interval</string>
+    <string name="checkconnect">Connected</string>
+    <string name="checkconnects">Disconnected</string>
+    <string name="seconds">s</string>
+    <string name="hour">h</string>
 </resources>

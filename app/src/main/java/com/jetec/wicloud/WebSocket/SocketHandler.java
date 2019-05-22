@@ -30,7 +30,7 @@ public class SocketHandler extends Handler {
         this.deviceList = deviceList;
         this.socket = socket;
         this.getSocket = getSocket;
-        //websocket handler
+
         return new Handler(msg -> {
             String message = msg.obj.toString();
             try {

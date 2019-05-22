@@ -163,4 +163,29 @@ public class HomeId {
             e.printStackTrace();
         }
     }
+
+    public void regethomeid() {
+
+        String url = "https://api.tinkermode.com/devices?homeId=" + Value.homeid;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+
+        GetArrayRequest getArrayRequest = new GetArrayRequest(url,
+                response -> {
+                    if (response != null) {
+                        Value.model = response;
+                        Log.d(TAG, "model = " + response);
+                    }
+                },
+                error -> Log.d(TAG, "VolleyError = " + error.networkResponse)) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "ModeCloud " + Value.token);
+                return headers;
+            }
+        };
+        getArrayRequest.setTag("start");
+        requestQueue.add(getArrayRequest);
+    }
 }

@@ -3,6 +3,7 @@ package com.jetec.wicloud.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,17 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.jetec.wicloud.ListView.AllStatusList;
 import com.jetec.wicloud.Listener.GetSocket;
 import com.jetec.wicloud.Listener.SocketListener;
+import com.jetec.wicloud.LoadHandler;
+import com.jetec.wicloud.Post_GET.HomeId;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.Value;
 import com.jetec.wicloud.WebSocket.Socket;
 import com.jetec.wicloud.WebSocket.SocketHandler;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -35,14 +35,17 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
     private String TAG = "ViewActivity";
     private Vibrator vibrator;
     private JSONObject responseJson;
-    private ArrayList<String> modelList, deviceListjson;
+    private ArrayList<String> deviceListjson;
     private int position;
     private ListView listView;
     private DeviceList deviceList = new DeviceList(this);
+    private HomeId homeId = new HomeId(this);
+    private LoadHandler loadHandler = new LoadHandler(this);
     private SocketHandler socketHandler = new SocketHandler();
     private Socket socket = new Socket();
     private GetSocket getSocket = new GetSocket();
     private AllStatusList allStatusList;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,6 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
         try {
             Intent intent = getIntent();
             responseJson = new JSONObject(intent.getStringExtra("responseJson"));
-            modelList = intent.getStringArrayListExtra("modelList");
             deviceListjson = intent.getStringArrayListExtra("deviceList");
             position = intent.getIntExtra("position", position);
             showlist();
@@ -83,10 +85,19 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
         TextView textView = findViewById(R.id.nodevice);
         textView.setVisibility(View.GONE);
         getSocket.setListener(this);
-
+        mHandler = new Handler();
+        getStatusHandler();
+        loadHandler.setload();
+        loadHandler.startload(getString(R.string.process));
         allStatusList = new AllStatusList(this, deviceListjson, position);
-
         socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket, getSocket));
+    }
+
+    private void getStatusHandler() {
+        mHandler.postDelayed(() -> {
+            mHandler.removeCallbacksAndMessages(null);
+            homeId.regethomeid();
+        }, 5000);
     }
 
     private void goback() {
@@ -177,10 +188,16 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
     public void getMessage() {
-        listView.setAdapter(allStatusList);
+        if (listView.getAdapter() == null) {
+            loadHandler.loadover();
+            listView.setAdapter(allStatusList);
+        } else {
+            allStatusList.notifyDataSetChanged();
+        }
     }
 }
