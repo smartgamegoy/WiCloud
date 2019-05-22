@@ -3,10 +3,8 @@ package com.jetec.wicloud.Post_GET;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.Value;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

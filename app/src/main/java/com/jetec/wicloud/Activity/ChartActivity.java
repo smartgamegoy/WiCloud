@@ -17,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
@@ -30,11 +29,9 @@ import com.jetec.wicloud.Post_GET.GetObjectRequest;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.Screen;
 import com.jetec.wicloud.Value;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
