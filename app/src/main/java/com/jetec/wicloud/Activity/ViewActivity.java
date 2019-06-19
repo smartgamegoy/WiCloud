@@ -73,7 +73,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
 
         try {
             Intent intent = getIntent();
-            responseJson = new JSONObject(intent.getStringExtra("responseJson"));
+            responseJson = new JSONObject(Objects.requireNonNull(intent.getStringExtra("responseJson")));
             Log.d(TAG, "responseJson = " + responseJson.toString());
 
             loadHandler.setload();
@@ -236,7 +236,7 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -254,7 +254,6 @@ public class ViewActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.

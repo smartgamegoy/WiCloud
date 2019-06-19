@@ -35,6 +35,7 @@ public class StartActivity extends AppCompatActivity {
         }
         else {
             setContentView(R.layout.startview);
+            //setContentView(R.layout.oldstartview);
         }
 
         int SPLASH_DISPLAY_LENGHT = 3000;
