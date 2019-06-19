@@ -11,17 +11,17 @@ public class GetUnit {
     public String unit(String sensor) {
         String unit = "";
 
-        if (sensor.matches("temperature")) {
+        if (sensor.contains("temperature")) {
             unit = " " + (char) (186) + "C";
-        } else if (sensor.matches("humidity")) {
+        } else if (sensor.contains("humidity")) {
             unit = " " + "%";
-        } else if (sensor.matches("wind_speed")) {
+        } else if (sensor.contains("wind_speed")) {
             unit = " " + "m/s";
-        } else if (sensor.matches("wind_direction")) {
+        } else if (sensor.contains("wind_direction")) {
             unit = " " + (char) (186);
-        } else if (sensor.matches("precipitation")) {
+        } else if (sensor.contains("precipitation")) {
             unit = " " + "mm";
-        } else if (sensor.matches("value")) {
+        } else if (sensor.contains("value")) {
             unit = "";
         } else {
             unit = "";

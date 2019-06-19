@@ -227,6 +227,8 @@ public class HandlerValue extends View {
                         canvas.drawText(max, xPos + yPos, (int) (ovalbottom - yPos + 1.75 * px), valueText);
                         canvas.drawText(String.valueOf(value) + getUnit.unit(sensor), xPos, (int) (ovalbottom - yPos + 2.5 * px), valueText);
                         canvas.drawCircle(xPos, ovalbottom - yPos, px, pointerPanit);
+                        Log.d(TAG, "文字 = " + (value) + getUnit.unit(sensor));
+                        Log.d(TAG, "文字 = " + sensor);
 
                         double x, y, Rx1, Ry1, Rx2, Ry2;
                         //noinspection IntegerDivisionInFloatingPointContext
