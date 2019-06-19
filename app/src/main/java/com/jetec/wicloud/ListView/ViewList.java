@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.jetec.wicloud.R;
-
 import java.util.ArrayList;
 
 public class ViewList extends BaseAdapter {

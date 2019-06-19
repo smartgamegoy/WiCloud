@@ -2,7 +2,6 @@ package com.jetec.wicloud.Post_GET;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.jetec.wicloud.LoadHandler;

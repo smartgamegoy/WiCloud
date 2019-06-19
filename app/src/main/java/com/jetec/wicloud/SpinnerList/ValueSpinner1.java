@@ -1,7 +1,6 @@
 package com.jetec.wicloud.SpinnerList;
 
 import android.content.Context;
-
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.Value;
 import org.json.JSONException;

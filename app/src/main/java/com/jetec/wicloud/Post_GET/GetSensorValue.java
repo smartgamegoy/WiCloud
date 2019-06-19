@@ -2,17 +2,14 @@ package com.jetec.wicloud.Post_GET;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.jetec.wicloud.Listener.GetSpinner;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.Value;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

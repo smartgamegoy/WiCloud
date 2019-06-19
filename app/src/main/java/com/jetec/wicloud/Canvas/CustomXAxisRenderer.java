@@ -1,7 +1,6 @@
 package com.jetec.wicloud.Canvas;
 
 import android.graphics.Canvas;
-
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.utils.MPPointF;

@@ -1,7 +1,8 @@
 package com.jetec.wicloud.Pageview;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PageView extends ConstraintLayout {
 

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
@@ -14,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 import com.jetec.wicloud.Listener.ConnectListener;
 import com.jetec.wicloud.Listener.GetConnect;
 import com.jetec.wicloud.Loading;
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectListener 
         //隱藏狀態欄
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         Login();

@@ -1,13 +1,16 @@
 package com.jetec.wicloud.Activity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import androidx.appcompat.app.AppCompatActivity;
 import com.jetec.wicloud.R;
 
 public class StartActivity extends AppCompatActivity {
@@ -21,12 +24,15 @@ public class StartActivity extends AppCompatActivity {
         Log.d(TAG,"onCreate");
         //隱藏標題欄
         supportRequestWindowFeature( Window.FEATURE_NO_TITLE);
-        //銀藏狀態欄
+        //隱藏狀態欄
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.startview);
+        //隱藏底部HOME工具列
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+
+        setContentView(R.layout.startview);
 
         int SPLASH_DISPLAY_LENGHT = 3000;
 

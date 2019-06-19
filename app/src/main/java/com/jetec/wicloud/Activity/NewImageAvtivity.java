@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.jetec.wicloud.Listener.GetSpinner;
 import com.jetec.wicloud.Listener.SpinnerListener;
 import com.jetec.wicloud.Post_GET.GetSensorValue;
@@ -22,11 +21,9 @@ import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.ShowMessage;
 import com.jetec.wicloud.SpinnerList.ValueSpinner1;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,6 @@ package com.jetec.wicloud.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.jetec.wicloud.Listener.GetSpinner;
 import com.jetec.wicloud.Listener.SpinnerListener;
 import com.jetec.wicloud.Post_GET.GetSensorValue;

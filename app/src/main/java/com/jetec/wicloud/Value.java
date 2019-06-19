@@ -1,7 +1,6 @@
 package com.jetec.wicloud;
 
 import com.jetec.wicloud.ListView.DataList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
