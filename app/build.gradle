@@ -6,8 +6,8 @@ android {
         applicationId "com.jetec.wicloud"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 3
-        versionName "1.1.1"
+        versionCode 4
+        versionName "1.1.2"
         buildConfigField("boolean", "LOG", "true")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
