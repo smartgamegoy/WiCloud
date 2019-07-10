@@ -23,8 +23,8 @@ import com.jetec.wicloud.Post_GET.HomeId;
 import com.jetec.wicloud.R;
 import com.jetec.wicloud.SQL.DeviceList;
 import com.jetec.wicloud.Value;
+import com.jetec.wicloud.WebSocket.HardwareSocketHandler;
 import com.jetec.wicloud.WebSocket.Socket;
-import com.jetec.wicloud.WebSocket.SocketHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -41,7 +41,8 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
     private DeviceList deviceList = new DeviceList(this);
     private HomeId homeId = new HomeId(this);
     private LoadHandler loadHandler = new LoadHandler(this);
-    private SocketHandler socketHandler = new SocketHandler();
+    private HardwareSocketHandler hardwareSocketHandler = new HardwareSocketHandler();
+    //private SocketHandler socketHandler = new SocketHandler();
     private Socket socket = new Socket();
     private GetSocket getSocket = new GetSocket();
     private AllStatusList allStatusList;
@@ -89,8 +90,9 @@ public class ListFunctionActivity extends AppCompatActivity implements SocketLis
         getStatusHandler();
         loadHandler.setload();
         loadHandler.startload(getString(R.string.process));
+        Log.d(TAG, "走到這");
         allStatusList = new AllStatusList(this, deviceListjson, position);
-        socket.getWebSocket(socketHandler.startHandler(listView, textView, deviceList, socket, getSocket));
+        socket.getWebSocket(hardwareSocketHandler.startHandler(listView, textView, deviceList, socket, getSocket));
     }
 
     private void getStatusHandler() {
